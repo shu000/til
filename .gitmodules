@@ -1,0 +1,3 @@
+[submodule "hugo/themes/hugo-flex"]
+	path = hugo/themes/hugo-flex
+	url = https://github.com/de-souza/hugo-flex.git
