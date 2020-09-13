@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  graphql-sv:
+    image: node:12.18
+
+    volumes:
+      - .:/workspace
+
+    ports:
+      - 3000:3000
+      - 4000:4000
+
+    init: true
+    tty: true
+
