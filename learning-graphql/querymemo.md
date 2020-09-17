@@ -32,3 +32,30 @@ mutation newPhoto($name: String!, $description: String) {
   }
 }
 ```
+
+## 5.2.3
+```
+query total {
+  totalPhotos
+}
+
+query listPhotos {
+  allPhotos {
+    id
+    name
+    description
+    url
+    category
+  }
+}
+
+mutation newPhoto($input: PostPhotoInput!) {
+  postPhoto(input:$input) {
+    id
+    name
+    url
+    description
+    category
+  }
+}
+```
