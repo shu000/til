@@ -59,3 +59,20 @@ mutation newPhoto($input: PostPhotoInput!) {
   }
 }
 ```
+
+## 5.2.4
+```
+query listPhotos {
+  allPhotos {
+    name
+    postedBy {
+      name
+    }
+    taggedUsers {
+      name
+    }
+  }
+}
+```
+
+## 5.2.5

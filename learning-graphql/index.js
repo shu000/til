@@ -1,4 +1,5 @@
 const { ApolloServer } = require('apollo-server');
+const { initialUsers, initialPhotos, initialTags } = require('./data');
 
 const typeDefs = `
   enum PhotoCategory {
@@ -15,6 +16,16 @@ const typeDefs = `
     name: String!
     description: String
     category: PhotoCategory!
+    postedBy: User!
+    taggedUsers: [Photo!]!
+  }
+
+  type User {
+    githubLogin: ID!
+    name: String
+    avatar: String
+    postedPhotos: [Photo!]!
+    inPhotos: [Photo!]!
   }
 
   input PostPhotoInput {
@@ -34,7 +45,9 @@ const typeDefs = `
 `;
 
 let _id = 0;
-const photos = [];
+const users = [...initialUsers];
+const photos = [...initialPhotos];
+const tags = [...initialTags];
 
 const resolvers = {
   Query: {
@@ -54,7 +67,23 @@ const resolvers = {
     },
   },
   Photo: {
-    url: parent => `http://example.com/img/${parent.id}.jpg`
+    url: parent => `http://example.com/img/${parent.id}.jpg`,
+    postedBy: parent => {
+      return users.find(user => user.githubLogin === parent.githubUser);
+    },
+    taggedUsers: parent => tags
+      .filter(tag => tag.photoID === parent.id)
+      .map(tag => tag.userID)
+      .map(userID => users.find(user => user.githubLogin === userID))
+  },
+  User: {
+    postedPhotos: parent => {
+      return photos.filter(photo => photo.githubUser === parent.githubLogin);
+    },
+    inPhotos: parent => tags
+      .filter(tag => tag.userID === parent.id)
+      .map(tag => tag.photoID)
+      .map(photoID => photos.find(photo => photo.id === photoID))
   }
 };
 
